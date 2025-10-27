@@ -14,6 +14,7 @@ customElements.define('urdf-viewer', URDFManipulator);
 // TODO: Remove this once modules or parcel is being used
 const viewer = document.querySelector('urdf-viewer');
 
+const testToggle = document.getElementById('test-button');
 const limitsToggle = document.getElementById('ignore-joint-limits');
 const collisionToggle = document.getElementById('collision-toggle');
 const radiansToggle = document.getElementById('radians-toggle');
@@ -324,9 +325,29 @@ const updateAngles = () => {
         viewer.setJointValue(`TC${ i }B`, THREE.MathUtils.lerp(0, 0.065, ratio));
 
         viewer.setJointValue(`W${ i }`, window.performance.now() * 0.001);
-
     }
 
+    const ratio = Math.max(0, Math.sin(1/8 * time));
+
+    for (let i = 0; i <= 2; i++) {
+
+      viewer.setJointValue(`arm_0_fr3_joint1`, THREE.MathUtils.lerp(-45, -45, ratio) * DEG2RAD);
+      viewer.setJointValue(`arm_1_fr3_joint1`, THREE.MathUtils.lerp(45, 45, ratio) * DEG2RAD);
+      viewer.setJointValue(`arm_${ i }_fr3_joint2`, THREE.MathUtils.lerp(-100, 0, ratio) * DEG2RAD);
+      viewer.setJointValue(`arm_${ i }_fr3_joint3`, THREE.MathUtils.lerp(0, 0, ratio) * DEG2RAD);
+      viewer.setJointValue(`arm_${ i }_fr3_joint4`, THREE.MathUtils.lerp(-100, 0, ratio) * DEG2RAD);
+      viewer.setJointValue(`arm_${ i }_fr3_joint5`, THREE.MathUtils.lerp(0, 0, ratio) * DEG2RAD);
+      viewer.setJointValue(`arm_${ i }_fr3_joint6`, THREE.MathUtils.lerp(90, 180, ratio) * DEG2RAD);
+      viewer.setJointValue(`arm_${ i }_fr3_joint7`, THREE.MathUtils.lerp(30, 30, ratio) * DEG2RAD);
+      viewer.setJointValue(`arm_${ i }_gripper_fr3_finger_joint1`, THREE.MathUtils.lerp(0, 0.04, ratio));
+    }
+
+    viewer.setJointValue('lift_0_upper_joint', THREE.MathUtils.lerp(0, 0.4, ratio));
+
+    // viewer.setJointValue(`front_left_wheel_joint`, THREE.MathUtils.lerp(-350, 350, ratio) * DEG2RAD);
+    // viewer.setJointValue(`front_right_wheel_joint`, THREE.MathUtils.lerp(-350, 350, ratio) * DEG2RAD);
+    // viewer.setJointValue(`rear_left_wheel_joint`, THREE.MathUtils.lerp(-350, 350, ratio) * DEG2RAD);
+    // viewer.setJointValue(`rear_right_wheel_joint`, THREE.MathUtils.lerp(-350, 350, ratio) * DEG2RAD);
 };
 
 const updateLoop = () => {
